@@ -3,16 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <title>Pick Verbs – Odia Game</title>
-<link rel="canonical" href="https://www.odias.in/pick-verbs.html" />
+  <!-- Correct canonical for apex -->
+  <link rel="canonical" href="https://odias.in/pick-verbs.html" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-<!-- Optional: force users from www -> apex -->
-<script>
-  (function () {
-    if (location.hostname === 'www.odias.in') {
-      location.replace('https://odias.in' + location.pathname + location.search + location.hash);
-    }
-  })();
-</script>  
 <style>
     :root{ --fg:#111; --muted:#666; --border:#e6e6e6; --bg:#fff; --radius:12px; }
     *{ box-sizing:border-box }
@@ -43,8 +36,9 @@
     <div class="right">
       <img id="avatar" class="avatar" alt="avatar" />
       <span id="whoami" class="who"></span>
-      <button id="btn-google">Sign in with Google</button>
-      <button id="btn-logout" style="display:none;">Log out</button>
+      <button id="btn-google" type="button">Sign in with Google</button>
+<button id="btn-logout" type="button" style="display:none;">Log out</button>
+
     </div>
   </header>
 
@@ -60,5 +54,61 @@
 
   <!-- The game script imports normalize.js itself -->
   <script type="module" src="./pick-verbs.js"></script>
+
+  <!-- Firebase Auth (same config as index.html) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
+    onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7hgP59mh5Ny5RJ2r2KUYwfd17HDaBG8E",
+    authDomain: "odias-91b87.firebaseapp.com",
+    projectId: "odias-91b87",
+    storageBucket: "odias-91b87.firebasestorage.app",
+    messagingSenderId: "690693947763",
+    appId: "1:690693947763:web:a907630766c50e067b4506",
+    measurementId: "G-KBYSJY1DRV"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  try { getAnalytics(app); } catch(_) {}
+
+  const auth = getAuth(app);
+  auth.useDeviceLanguage();
+  const provider = new GoogleAuthProvider();
+
+  const btnGoogle = document.getElementById('btn-google');
+  const btnLogout = document.getElementById('btn-logout');
+  const whoami = document.getElementById('whoami');
+  const avatar = document.getElementById('avatar');
+
+  btnGoogle?.addEventListener('click', async () => {
+    try { await signInWithPopup(auth, provider); }
+    catch { await signInWithRedirect(auth, provider); }
+  });
+
+  btnLogout?.addEventListener('click', () => signOut(auth));
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const name = user.displayName || user.email || "Signed in";
+      whoami.textContent = name;
+      if (user.photoURL) { avatar.src = user.photoURL; avatar.style.display = 'inline-block'; }
+      else { avatar.style.display = 'none'; }
+      btnGoogle.style.display = 'none';
+      btnLogout.style.display = 'inline-block';
+    } else {
+      whoami.textContent = "";
+      avatar.style.display = 'none';
+      btnGoogle.style.display = 'inline-block';
+      btnLogout.style.display = 'none';
+    }
+  });
+</script>
+
 </body>
 </html>

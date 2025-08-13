@@ -4,17 +4,7 @@
   <meta charset="utf-8" />
   <title>Odia Dictionary Search</title>
 	<!-- Canonical URL -->
-  <link rel="canonical" href="https://www.odias.in/" />
-<!-- Redirect apex -> www early to avoid flicker -->
-  <script>
-    (function () {
-      // Don't redirect while an auth flow is in progress
-    if (sessionStorage.getItem('authBusy') === '1') return;
-	if (location.hostname === 'odias.in') {
-        location.replace('https://www.odias.in' + location.pathname + location.search + location.hash);
-      }
-    })();
-  </script>
+  <link rel="canonical" href="https://odias.in/" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     :root{ --fg:#111; --muted:#666; --border:#e6e6e6; --bg:#fff; --radius:12px; }
@@ -54,8 +44,9 @@
   <div class="right">
     <img id="avatar" class="avatar" alt="avatar" />
     <span id="whoami" class="who"></span>
-    <button id="btn-google">Sign in with Google</button>
-    <button id="btn-logout" style="display:none;">Log out</button>
+    <button id="btn-google" type="button">Sign in with Google</button>
+<button id="btn-logout" type="button" style="display:none;">Log out</button>
+
   </div>
 </header>
 
