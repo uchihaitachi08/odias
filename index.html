@@ -8,7 +8,9 @@
 <!-- Redirect apex -> www early to avoid flicker -->
   <script>
     (function () {
-      if (location.hostname === 'odias.in') {
+      // Don't redirect while an auth flow is in progress
+    if (sessionStorage.getItem('authBusy') === '1') return;
+	if (location.hostname === 'odias.in') {
         location.replace('https://www.odias.in' + location.pathname + location.search + location.hash);
       }
     })();
