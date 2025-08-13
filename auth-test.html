@@ -1,0 +1,61 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Auth Test</title>
+<div style="display:flex;gap:.5rem;align-items:center">
+  <button id="btn-google">Sign in with Google</button>
+  <button id="btn-logout" style="display:none">Log out</button>
+  <img id="avatar" style="display:none;width:36px;height:36px;border-radius:50%">
+  <span id="whoami" style="color:#666"></span>
+</div>
+<div id="state" style="margin-top:.5rem;color:#666">Checking sign-in status…</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
+    onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMN7iDvBV5jMXefdlrXX1K-g1W4kFar7Y",
+    authDomain: "odiagames.firebaseapp.com",
+    projectId: "odiagames",
+    storageBucket: "odiagames.firebasestorage.app",
+    messagingSenderId: "975806732824",
+    appId: "1:975806732824:web:52f193988fd672625ac16d",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  auth.useDeviceLanguage();
+  const provider = new GoogleAuthProvider();
+
+  const btnGoogle = document.getElementById('btn-google');
+  const btnLogout = document.getElementById('btn-logout');
+  const avatar = document.getElementById('avatar');
+  const whoami = document.getElementById('whoami');
+  const state = document.getElementById('state');
+
+  btnGoogle.addEventListener('click', async () => {
+    try { await signInWithPopup(auth, provider); }
+    catch { await signInWithRedirect(auth, provider); }
+  });
+  btnLogout.addEventListener('click', () => signOut(auth));
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      whoami.textContent = user.displayName || user.email || "Signed in";
+      if (user.photoURL) { avatar.src = user.photoURL; avatar.style.display = 'inline-block'; }
+      btnGoogle.style.display = 'none';
+      btnLogout.style.display = 'inline-block';
+      state.textContent = "You’re signed in.";
+    } else {
+      whoami.textContent = "";
+      avatar.style.display = 'none';
+      btnGoogle.style.display = 'inline-block';
+      btnLogout.style.display = 'none';
+      state.textContent = "You’re signed out.";
+    }
+  });
+</script>

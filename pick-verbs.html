@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pick Verbs – Odia Game</title>
+<link rel="canonical" href="https://www.odiagames.in/pick-verbs.html" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{ --fg:#111; --muted:#666; --border:#e6e6e6; --bg:#fff; --radius:12px; }
+    *{ box-sizing:border-box }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial; margin:0; color:var(--fg); background:var(--bg); }
+    header{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg); z-index:10; }
+    .brand{ font-weight:800; letter-spacing:-.2px; font-size:clamp(18px,3.2vw,22px); }
+    nav a{ text-decoration:none; color:var(--fg); margin-right:16px }
+    .right{ display:flex; align-items:center; gap:10px; }
+    button{ height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--border); background:#f7f7f7; cursor:pointer; font-size:14px }
+    .avatar{ width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid var(--border); display:none; }
+    .who{ color:var(--muted); font-size:14px; }
+    .wrap{ max-width:980px; margin:0 auto; padding:18px 16px; }
+    .muted { color:#888 }
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#eaeaea; --muted:#aaa; --border:#2a2a2a; --bg:#0f0f0f; }
+      button { background:#141414; }
+      header{ background:#0f0f0f; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Odia Dictionary</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="pick-verbs.html">Pick Verbs</a>
+    </nav>
+    <div class="right">
+      <img id="avatar" class="avatar" alt="avatar" />
+      <span id="whoami" class="who"></span>
+      <button id="btn-google">Sign in with Google</button>
+      <button id="btn-logout" style="display:none;">Log out</button>
+    </div>
+  </header>
+
+  <section class="wrap" id="verb-game">
+    <h2 style="margin:0 0 .5rem">Pick the Verbs</h2>
+    <div id="vg-status" class="muted" style="margin:.25rem 0 .75rem">Loading…</div>
+    <div id="vg-cards" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center;">
+      <button id="vg-next" style="display:none;">Next round</button>
+      <span id="vg-score" class="muted"></span>
+    </div>
+  </section>
+
+  <!-- The game script imports normalize.js itself -->
+  <script type="module" src="./pick-verbs.js"></script>
+</body>
+</html>
